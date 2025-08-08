@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Shuffle Puzzle Game</title>
+    <title>Shuffle Puzzle Game - Hiren Sojitra</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="./css/enhanced-style.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/img/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/img/favicon.svg" />
+    <link rel="shortcut icon" href="/img/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Puzzle" />
+    <link rel="manifest" href="/img/site.webmanifest" />
 </head>
+
 <body>
     <div class="game-container">
         <!-- Introduction Step -->
@@ -17,10 +25,10 @@
                         <i class="fas fa-user-circle"></i>
                     </div>
                     <h1>Shuffle Puzzle Game</h1>
-                    <p class="developer-name">Developed by <strong>Enhanced Game Studio</strong></p>
+                    <p class="developer-name">Developed by <a href="https://www.postnew.in/" class="text-danger" target="_blank"><strong>Hiren Sojitra</strong></a></p>
                     <p class="game-description">
-                        Welcome to the ultimate sliding puzzle experience! Test your problem-solving skills 
-                        with beautiful images and smooth gameplay. Challenge yourself across different 
+                        Welcome to the ultimate sliding puzzle experience! Test your problem-solving skills
+                        with beautiful images and smooth gameplay. Challenge yourself across different
                         difficulty levels and track your best scores.
                     </p>
                 </div>
@@ -53,7 +61,7 @@
             <div class="step-content">
                 <h2><i class="fas fa-th"></i> Step 1: Choose Difficulty</h2>
                 <p>Select your preferred grid size. Larger grids are more challenging!</p>
-                
+
                 <div class="grid-options">
                     <div class="grid-option" data-size="3">
                         <div class="grid-preview grid-3x3">
@@ -71,7 +79,7 @@
                         <p>3×3 Grid</p>
                         <span class="difficulty-badge easy">Beginner</span>
                     </div>
-                    
+
                     <div class="grid-option selected" data-size="4">
                         <div class="grid-preview grid-4x4">
                             <div class="preview-tile"></div>
@@ -95,7 +103,7 @@
                         <p>4×4 Grid</p>
                         <span class="difficulty-badge medium">Intermediate</span>
                     </div>
-                    
+
                     <div class="grid-option" data-size="5">
                         <div class="grid-preview grid-5x5">
                             <div class="preview-tile"></div>
@@ -129,7 +137,7 @@
                         <span class="difficulty-badge hard">Expert</span>
                     </div>
                 </div>
-                
+
                 <div class="step-actions">
                     <button class="btn btn-secondary" onclick="previousStep()">
                         <i class="fas fa-arrow-left"></i> Back
@@ -146,7 +154,7 @@
             <div class="step-content">
                 <h2><i class="fas fa-images"></i> Step 2: Choose Your Image</h2>
                 <p>Select a beautiful image from Unsplash or use your own custom URL</p>
-                
+
                 <div class="image-categories">
                     <button class="category-btn active" data-category="nature">
                         <i class="fas fa-leaf"></i> Nature
@@ -164,19 +172,20 @@
                         <i class="fas fa-rocket"></i> Space
                     </button>
                 </div>
-                
+
                 <div class="image-grid" id="imageGrid">
                     <!-- Images will be loaded here -->
                 </div>
-                
+
                 <div class="custom-image-section">
-                    <h3>Or use your own image:</h3>
-                    <input type="url" id="customImageInput" placeholder="Enter image URL..." class="custom-input">
-                    <button class="btn btn-secondary" onclick="useCustomImage()">
-                        <i class="fas fa-link"></i> Use Custom URL
+                    <h3>Or upload your own image:</h3>
+                    <input type="file" id="imageUploadInput" accept="image/*" class="custom-input"
+                        style="display: none;">
+                    <button class="btn btn-secondary" onclick="document.getElementById('imageUploadInput').click();">
+                        <i class="fas fa-upload"></i> Upload Photo
                     </button>
                 </div>
-                
+
                 <div class="step-actions">
                     <button class="btn btn-secondary" onclick="previousStep()">
                         <i class="fas fa-arrow-left"></i> Back
@@ -265,4 +274,5 @@
 
     <script src="./js/enhanced-puzzle.js"></script>
 </body>
+
 </html>
