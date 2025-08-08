@@ -1,33 +1,103 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Shuffle Game">
-    <title>Suffle Game</title>
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/41106f129f.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css" rel="stylesheet">
-    <link href="./css/style.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Shuffle Puzzle Game</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="./css/enhanced-style.css" rel="stylesheet">
 </head>
-
 <body>
-    <div class="block test" id="2048"></div>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="js/tilePuzzle.js"></script>
-    <script type="text/javascript">
-    $(window).on('load', function() {
-        $('.test').tilePuzzle({
-            level: 3,
-            imageUrl: 'https://images.unsplash.com/photo-1558981852-426c6c22a060?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1951&q=80',
-            // animation: 'shake',
-            gameLevel: '',
-            bsPosition: 9,
-            maxWidth: ''
-        });
-    });
-    </script>
-</body>
+    <div class="game-container">
+        <header class="game-header">
+            <h1><i class="fas fa-puzzle-piece"></i> Shuffle Puzzle</h1>
+            <div class="game-controls">
+                <select id="difficulty" class="control-select">
+                    <option value="3">Easy (3x3)</option>
+                    <option value="4" selected>Medium (4x4)</option>
+                    <option value="5">Hard (5x5)</option>
+                </select>
+                <select id="imageSelect" class="control-select">
+                    <option value="nature">Nature</option>
+                    <option value="city">City</option>
+                    <option value="abstract">Abstract</option>
+                    <option value="custom">Custom URL</option>
+                </select>
+                <button id="newGame" class="btn btn-primary">
+                    <i class="fas fa-play"></i> New Game
+                </button>
+                <button id="hintBtn" class="btn btn-secondary">
+                    <i class="fas fa-lightbulb"></i> Hint
+                </button>
+            </div>
+        </header>
 
+        <div class="game-stats">
+            <div class="stat-item">
+                <i class="fas fa-stopwatch"></i>
+                <span>Time: <span id="timer">00:00</span></span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-mouse-pointer"></i>
+                <span>Moves: <span id="moveCounter">0</span></span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-trophy"></i>
+                <span>Best: <span id="bestScore">--</span></span>
+            </div>
+        </div>
+
+        <div class="game-board-container">
+            <div id="gameBoard" class="game-board"></div>
+            <div id="previewImage" class="preview-image">
+                <img id="previewImg" src="" alt="Preview">
+                <div class="preview-label">Preview</div>
+            </div>
+        </div>
+
+        <div id="successModal" class="modal">
+            <div class="modal-content">
+                <div class="success-animation">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h2>Congratulations!</h2>
+                <div class="success-stats">
+                    <div class="success-stat">
+                        <span class="stat-label">Time:</span>
+                        <span id="finalTime" class="stat-value">--</span>
+                    </div>
+                    <div class="success-stat">
+                        <span class="stat-label">Moves:</span>
+                        <span id="finalMoves" class="stat-value">--</span>
+                    </div>
+                    <div class="success-stat">
+                        <span class="stat-label">Rating:</span>
+                        <span id="finalRating" class="stat-value">--</span>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button id="playAgain" class="btn btn-primary">
+                        <i class="fas fa-redo"></i> Play Again
+                    </button>
+                    <button id="nextLevel" class="btn btn-secondary">
+                        <i class="fas fa-arrow-right"></i> Next Level
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="customImageModal" class="modal">
+            <div class="modal-content">
+                <h3>Enter Custom Image URL</h3>
+                <input type="url" id="customImageUrl" placeholder="https://example.com/image.jpg" class="custom-input">
+                <div class="modal-actions">
+                    <button id="confirmCustomImage" class="btn btn-primary">Confirm</button>
+                    <button id="cancelCustomImage" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/enhanced-puzzle.js"></script>
+</body>
 </html>
