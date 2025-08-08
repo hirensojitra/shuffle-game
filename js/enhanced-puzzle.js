@@ -96,7 +96,9 @@ class EnhancedPuzzleGame {
         } else {
             this.currentImage = this.images[value];
             this.updatePreviewImage();
-            this.startNewGame();
+            if (this.gameActive || this.pieces.length > 0) {
+                this.startNewGame();
+            }
         }
     }
     
@@ -116,7 +118,9 @@ class EnhancedPuzzleGame {
             this.currentImage = url;
             this.updatePreviewImage();
             this.closeCustomImageModal();
-            this.startNewGame();
+            if (this.gameActive || this.pieces.length > 0) {
+                this.startNewGame();
+            }
         }
     }
     
@@ -125,7 +129,6 @@ class EnhancedPuzzleGame {
     }
     
     initializeGame() {
-        this.createGameBoard();
         this.updatePreviewImage();
         this.startNewGame();
     }
@@ -133,20 +136,19 @@ class EnhancedPuzzleGame {
     createGameBoard() {
         const gameBoard = document.getElementById('gameBoard');
         const boardSize = Math.min(500, window.innerWidth - 40);
-        const pieceSize = (boardSize - 20) / this.gridSize;
         
         gameBoard.style.gridTemplateColumns = `repeat(${this.gridSize}, 1fr)`;
         gameBoard.style.width = `${boardSize}px`;
         gameBoard.style.height = `${boardSize}px`;
         
+        // Clear existing pieces
         gameBoard.innerHTML = '';
         
+        // Create new pieces array
         for (let row = 0; row < this.gridSize; row++) {
             for (let col = 0; col < this.gridSize; col++) {
                 const piece = document.createElement('div');
                 piece.className = 'puzzle-piece';
-                piece.style.width = `${pieceSize}px`;
-                piece.style.height = `${pieceSize}px`;
                 piece.dataset.row = row;
                 piece.dataset.col = col;
                 
@@ -163,6 +165,8 @@ class EnhancedPuzzleGame {
         this.gameActive = true;
         this.startTime = Date.now();
         
+        // Recreate the game board with new grid size
+        this.createGameBoard();
         this.updateMoveCounter();
         this.startTimer();
         this.initializePuzzle();
@@ -249,8 +253,12 @@ class EnhancedPuzzleGame {
                 const pieceCol = pieceValue % this.gridSize;
                 
                 piece.style.backgroundImage = `url(${this.currentImage})`;
-                piece.style.backgroundPosition = 
-                    `-${pieceCol * (100 / (this.gridSize - 1))}% -${pieceRow * (100 / (this.gridSize - 1))}%`;
+                
+                // Fix background positioning calculation
+                const bgPosX = (pieceCol * 100) / (this.gridSize - 1);
+                const bgPosY = (pieceRow * 100) / (this.gridSize - 1);
+                
+                piece.style.backgroundPosition = `-${bgPosX}% -${bgPosY}%`;
                 piece.style.backgroundSize = `${this.gridSize * 100}% ${this.gridSize * 100}%`;
                 
                 // Highlight moveable pieces
