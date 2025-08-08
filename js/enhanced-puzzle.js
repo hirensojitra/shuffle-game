@@ -8,35 +8,155 @@ class EnhancedPuzzleGame {
         this.timerInterval = null;
         this.gameActive = false;
         this.hintsUsed = 0;
+        this.currentStep = 0;
+        this.selectedImage = null;
         
-        this.images = {
-            nature: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-            city: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-            abstract: 'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+        this.imageCategories = {
+            nature: [
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+            ],
+            city: [
+                'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1514565131-fce0801e5785?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+            ],
+            abstract: [
+                'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1557672172-298e090bd0f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+            ],
+            animals: [
+                'https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1546026423-cc4642628d2b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+            ],
+            space: [
+                'https://images.unsplash.com/photo-1446776877081-d282a0f896e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1502134249126-9f3755a50d78?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+            ]
         };
         
-        this.currentImage = this.images.nature;
         this.bestScores = this.loadBestScores();
-        
         this.initializeEventListeners();
-        this.initializeGame();
+        this.loadImageCategory('nature');
     }
     
     initializeEventListeners() {
-        document.getElementById('newGame').addEventListener('click', () => this.startNewGame());
-        document.getElementById('hintBtn').addEventListener('click', () => this.showHint());
-        document.getElementById('difficulty').addEventListener('change', (e) => {
-            this.gridSize = parseInt(e.target.value);
-            this.startNewGame();
+        // Grid selection
+        document.querySelectorAll('.grid-option').forEach(option => {
+            option.addEventListener('click', () => this.selectGrid(option));
         });
-        document.getElementById('imageSelect').addEventListener('change', (e) => this.handleImageChange(e));
-        document.getElementById('playAgain').addEventListener('click', () => this.closeModalAndRestart());
-        document.getElementById('nextLevel').addEventListener('click', () => this.nextLevel());
-        document.getElementById('confirmCustomImage').addEventListener('click', () => this.confirmCustomImage());
-        document.getElementById('cancelCustomImage').addEventListener('click', () => this.closeCustomImageModal());
         
-        // Touch support for mobile
+        // Image category selection
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', () => this.selectCategory(btn));
+        });
+        
+        // Game controls
+        document.getElementById('resetGame').addEventListener('click', () => this.resetToSetup());
+        document.getElementById('hintBtn').addEventListener('click', () => this.showHint());
+        document.getElementById('playAgain').addEventListener('click', () => this.startGame());
+        document.getElementById('newSetup').addEventListener('click', () => this.resetToSetup());
+        
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => this.handleKeyPress(e));
+        
+        // Touch support
         this.addTouchSupport();
+    }
+    
+    selectGrid(option) {
+        document.querySelectorAll('.grid-option').forEach(opt => opt.classList.remove('selected'));
+        option.classList.add('selected');
+        this.gridSize = parseInt(option.dataset.size);
+    }
+    
+    selectCategory(btn) {
+        document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        this.loadImageCategory(btn.dataset.category);
+    }
+    
+    loadImageCategory(category) {
+        const imageGrid = document.getElementById('imageGrid');
+        imageGrid.innerHTML = '';
+        
+        this.imageCategories[category].forEach((imageUrl, index) => {
+            const imageOption = document.createElement('div');
+            imageOption.className = 'image-option';
+            imageOption.innerHTML = `
+                <img src="${imageUrl}" alt="Image ${index + 1}" loading="lazy">
+                <div class="image-overlay">
+                    <i class="fas fa-check"></i>
+                </div>
+            `;
+            
+            imageOption.addEventListener('click', () => this.selectImage(imageOption, imageUrl));
+            imageGrid.appendChild(imageOption);
+        });
+    }
+    
+    selectImage(option, imageUrl) {
+        document.querySelectorAll('.image-option').forEach(opt => opt.classList.remove('selected'));
+        option.classList.add('selected');
+        this.selectedImage = imageUrl;
+        document.getElementById('imageNextBtn').disabled = false;
+    }
+    
+    useCustomImage() {
+        const customUrl = document.getElementById('customImageInput').value.trim();
+        if (customUrl) {
+            // Clear other selections
+            document.querySelectorAll('.image-option').forEach(opt => opt.classList.remove('selected'));
+            this.selectedImage = customUrl;
+            document.getElementById('imageNextBtn').disabled = false;
+            
+            // Visual feedback
+            document.getElementById('customImageInput').style.borderColor = '#667eea';
+            setTimeout(() => {
+                document.getElementById('customImageInput').style.borderColor = '';
+            }, 1000);
+        }
+    }
+    
+    handleKeyPress(e) {
+        if (!this.gameActive) return;
+        
+        const { row, col } = this.emptyPosition;
+        let targetRow = row, targetCol = col;
+        
+        switch (e.key) {
+            case 'ArrowUp':
+                e.preventDefault();
+                targetRow = row + 1;
+                break;
+            case 'ArrowDown':
+                e.preventDefault();
+                targetRow = row - 1;
+                break;
+            case 'ArrowLeft':
+                e.preventDefault();
+                targetCol = col + 1;
+                break;
+            case 'ArrowRight':
+                e.preventDefault();
+                targetCol = col - 1;
+                break;
+            default:
+                return;
+        }
+        
+        if (this.isValidPosition(targetRow, targetCol)) {
+            this.movePiece(targetRow, targetCol);
+        }
     }
     
     addTouchSupport() {
@@ -48,7 +168,7 @@ class EnhancedPuzzleGame {
         });
         
         document.addEventListener('touchend', (e) => {
-            if (!touchStartX || !touchStartY) return;
+            if (!touchStartX || !touchStartY || !this.gameActive) return;
             
             const touchEndX = e.changedTouches[0].clientX;
             const touchEndY = e.changedTouches[0].clientY;
@@ -57,12 +177,10 @@ class EnhancedPuzzleGame {
             const deltaY = touchEndY - touchStartY;
             
             if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                // Horizontal swipe
                 if (Math.abs(deltaX) > 50) {
                     this.handleSwipe(deltaX > 0 ? 'right' : 'left');
                 }
             } else {
-                // Vertical swipe
                 if (Math.abs(deltaY) > 50) {
                     this.handleSwipe(deltaY > 0 ? 'down' : 'up');
                 }
@@ -89,50 +207,6 @@ class EnhancedPuzzleGame {
         }
     }
     
-    handleImageChange(e) {
-        const value = e.target.value;
-        if (value === 'custom') {
-            this.showCustomImageModal();
-        } else {
-            this.currentImage = this.images[value];
-            this.updatePreviewImage();
-            if (this.gameActive || this.pieces.length > 0) {
-                this.startNewGame();
-            }
-        }
-    }
-    
-    showCustomImageModal() {
-        document.getElementById('customImageModal').style.display = 'block';
-        document.getElementById('customImageUrl').focus();
-    }
-    
-    closeCustomImageModal() {
-        document.getElementById('customImageModal').style.display = 'none';
-        document.getElementById('imageSelect').value = 'nature';
-    }
-    
-    confirmCustomImage() {
-        const url = document.getElementById('customImageUrl').value.trim();
-        if (url) {
-            this.currentImage = url;
-            this.updatePreviewImage();
-            this.closeCustomImageModal();
-            if (this.gameActive || this.pieces.length > 0) {
-                this.startNewGame();
-            }
-        }
-    }
-    
-    updatePreviewImage() {
-        document.getElementById('previewImg').src = this.currentImage;
-    }
-    
-    initializeGame() {
-        this.updatePreviewImage();
-        this.startNewGame();
-    }
-    
     createGameBoard() {
         const gameBoard = document.getElementById('gameBoard');
         const boardSize = Math.min(500, window.innerWidth - 40);
@@ -140,11 +214,8 @@ class EnhancedPuzzleGame {
         gameBoard.style.gridTemplateColumns = `repeat(${this.gridSize}, 1fr)`;
         gameBoard.style.width = `${boardSize}px`;
         gameBoard.style.height = `${boardSize}px`;
-        
-        // Clear existing pieces
         gameBoard.innerHTML = '';
         
-        // Create new pieces array
         for (let row = 0; row < this.gridSize; row++) {
             for (let col = 0; col < this.gridSize; col++) {
                 const piece = document.createElement('div');
@@ -153,33 +224,59 @@ class EnhancedPuzzleGame {
                 piece.dataset.col = col;
                 
                 piece.addEventListener('click', () => this.handlePieceClick(row, col));
-                
                 gameBoard.appendChild(piece);
             }
         }
     }
     
-    startNewGame() {
+    startGame() {
         this.moves = 0;
         this.hintsUsed = 0;
         this.gameActive = true;
         this.startTime = Date.now();
         
-        // Recreate the game board with new grid size
+        // Show game board and hide modal
+        document.getElementById('gameBoard').style.display = 'grid';
+        document.getElementById('successModal').style.display = 'none';
+        
         this.createGameBoard();
         this.updateMoveCounter();
         this.startTimer();
         this.initializePuzzle();
         this.updateBestScoreDisplay();
+        this.updatePreviewImage();
         
-        // Clear any existing hints
         document.querySelectorAll('.puzzle-piece').forEach(piece => {
             piece.classList.remove('hint', 'moveable');
         });
     }
     
+    resetToSetup() {
+        this.gameActive = false;
+        this.stopTimer();
+        document.getElementById('successModal').style.display = 'none';
+        
+        // Reset to introduction step
+        document.querySelectorAll('.game-step').forEach(step => step.classList.remove('active'));
+        document.getElementById('introStep').classList.add('active');
+        
+        // Hide game board
+        document.getElementById('gameBoard').style.display = 'none';
+        
+        // Reset selections
+        this.selectedImage = null;
+        document.getElementById('imageNextBtn').disabled = true;
+        document.querySelectorAll('.image-option').forEach(opt => opt.classList.remove('selected'));
+        document.getElementById('customImageInput').value = '';
+    }
+    
+    updatePreviewImage() {
+        if (this.selectedImage) {
+            document.getElementById('previewImg').src = this.selectedImage;
+        }
+    }
+    
     initializePuzzle() {
-        // Create solved state
         this.pieces = [];
         for (let row = 0; row < this.gridSize; row++) {
             this.pieces[row] = [];
@@ -188,17 +285,14 @@ class EnhancedPuzzleGame {
             }
         }
         
-        // Set empty position (bottom-right)
         this.emptyPosition = { row: this.gridSize - 1, col: this.gridSize - 1 };
         this.pieces[this.emptyPosition.row][this.emptyPosition.col] = null;
         
-        // Shuffle the puzzle
         this.shufflePuzzle();
         this.renderPuzzle();
     }
     
     shufflePuzzle() {
-        // Perform random valid moves to ensure solvability
         const moves = this.gridSize * this.gridSize * 100;
         
         for (let i = 0; i < moves; i++) {
@@ -216,10 +310,10 @@ class EnhancedPuzzleGame {
         const { row, col } = this.emptyPosition;
         
         const directions = [
-            { row: row - 1, col: col }, // up
-            { row: row + 1, col: col }, // down
-            { row: row, col: col - 1 }, // left
-            { row: row, col: col + 1 }  // right
+            { row: row - 1, col: col },
+            { row: row + 1, col: col },
+            { row: row, col: col - 1 },
+            { row: row, col: col + 1 }
         ];
         
         directions.forEach(pos => {
@@ -252,16 +346,10 @@ class EnhancedPuzzleGame {
                 const pieceRow = Math.floor(pieceValue / this.gridSize);
                 const pieceCol = pieceValue % this.gridSize;
                 
-                piece.style.backgroundImage = `url(${this.currentImage})`;
-                
-                // Fix background positioning calculation
-                const bgPosX = (pieceCol * 100) / (this.gridSize - 1);
-                const bgPosY = (pieceRow * 100) / (this.gridSize - 1);
-                
-                piece.style.backgroundPosition = `-${bgPosX}% -${bgPosY}%`;
+                piece.style.backgroundImage = `url(${this.selectedImage})`;
                 piece.style.backgroundSize = `${this.gridSize * 100}% ${this.gridSize * 100}%`;
+                piece.style.backgroundPosition = `${(pieceCol * 100) / (this.gridSize - 1)}% ${(pieceRow * 100) / (this.gridSize - 1)}%`;
                 
-                // Highlight moveable pieces
                 if (this.canMovePiece(row, col)) {
                     piece.classList.add('moveable');
                 }
@@ -275,12 +363,8 @@ class EnhancedPuzzleGame {
         if (this.canMovePiece(row, col)) {
             this.movePiece(row, col);
         } else {
-            // Visual feedback for invalid move
             const piece = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
-            piece.style.animation = 'none';
-            piece.offsetHeight; // Trigger reflow
             piece.style.animation = 'shake 0.5s ease-in-out';
-            
             setTimeout(() => {
                 piece.style.animation = '';
             }, 500);
@@ -301,12 +385,6 @@ class EnhancedPuzzleGame {
         this.updateMoveCounter();
         this.renderPuzzle();
         
-        // Add move animation
-        const piece = document.querySelector(`[data-row="${this.emptyPosition.row}"][data-col="${this.emptyPosition.col}"]`);
-        piece.style.animation = 'none';
-        piece.offsetHeight;
-        piece.style.animation = 'fadeIn 0.3s ease';
-        
         if (this.isPuzzleSolved()) {
             this.handleGameComplete();
         }
@@ -323,7 +401,6 @@ class EnhancedPuzzleGame {
             for (let col = 0; col < this.gridSize; col++) {
                 const expectedValue = row * this.gridSize + col;
                 if (row === this.gridSize - 1 && col === this.gridSize - 1) {
-                    // Last position should be empty
                     if (this.pieces[row][col] !== null) return false;
                 } else {
                     if (this.pieces[row][col] !== expectedValue) return false;
@@ -340,7 +417,6 @@ class EnhancedPuzzleGame {
         const finalTime = this.getElapsedTime();
         const rating = this.calculateRating();
         
-        // Update best score
         const scoreKey = `best_${this.gridSize}x${this.gridSize}`;
         const currentBest = this.bestScores[scoreKey];
         if (!currentBest || this.moves < currentBest.moves || 
@@ -354,7 +430,7 @@ class EnhancedPuzzleGame {
     
     calculateRating() {
         const optimalMoves = this.gridSize * this.gridSize * 2;
-        const timeBonus = this.getElapsedTime() < 300 ? 1 : 0; // 5 minutes
+        const timeBonus = this.getElapsedTime() < 300 ? 1 : 0;
         
         if (this.moves <= optimalMoves && timeBonus) {
             return { text: 'Perfect!', class: 'perfect', stars: 3 };
@@ -376,32 +452,13 @@ class EnhancedPuzzleGame {
         document.getElementById('successModal').style.display = 'block';
     }
     
-    closeModalAndRestart() {
-        document.getElementById('successModal').style.display = 'none';
-        this.startNewGame();
-    }
-    
-    nextLevel() {
-        document.getElementById('successModal').style.display = 'none';
-        if (this.gridSize < 5) {
-            this.gridSize++;
-            document.getElementById('difficulty').value = this.gridSize;
-            this.createGameBoard();
-            this.startNewGame();
-        } else {
-            this.startNewGame();
-        }
-    }
-    
     showHint() {
         if (!this.gameActive) return;
         
-        // Clear previous hints
         document.querySelectorAll('.puzzle-piece').forEach(piece => {
             piece.classList.remove('hint');
         });
         
-        // Find a piece that can move and is in wrong position
         for (let row = 0; row < this.gridSize; row++) {
             for (let col = 0; col < this.gridSize; col++) {
                 const pieceValue = this.pieces[row][col];
@@ -474,26 +531,43 @@ class EnhancedPuzzleGame {
     }
 }
 
-// Add shake animation to CSS dynamically
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-        20%, 40%, 60%, 80% { transform: translateX(5px); }
+// Global functions for step navigation
+function nextStep() {
+    const steps = ['introStep', 'gridStep', 'imageStep', 'gameStep'];
+    const currentStep = document.querySelector('.game-step.active');
+    const currentIndex = steps.indexOf(currentStep.id);
+    
+    if (currentIndex < steps.length - 1) {
+        currentStep.classList.remove('active');
+        const nextStepElement = document.getElementById(steps[currentIndex + 1]);
+        nextStepElement.classList.add('active');
+        
+        // If moving to game step, start the game
+        if (steps[currentIndex + 1] === 'gameStep') {
+            window.puzzleGame.startGame();
+        }
     }
-`;
-document.head.appendChild(style);
+}
+
+function previousStep() {
+    const steps = ['introStep', 'gridStep', 'imageStep', 'gameStep'];
+    const currentStep = document.querySelector('.game-step.active');
+    const currentIndex = steps.indexOf(currentStep.id);
+    
+    if (currentIndex > 0) {
+        currentStep.classList.remove('active');
+        document.getElementById(steps[currentIndex - 1]).classList.add('active');
+    }
+}
 
 // Initialize game when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new EnhancedPuzzleGame();
+    window.puzzleGame = new EnhancedPuzzleGame();
 });
 
 // Handle window resize
 window.addEventListener('resize', () => {
-    // Recreate board with new dimensions
-    if (window.puzzleGame) {
+    if (window.puzzleGame && window.puzzleGame.gameActive) {
         window.puzzleGame.createGameBoard();
         window.puzzleGame.renderPuzzle();
     }

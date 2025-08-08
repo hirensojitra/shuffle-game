@@ -9,52 +9,228 @@
 </head>
 <body>
     <div class="game-container">
-        <header class="game-header">
-            <h1><i class="fas fa-puzzle-piece"></i> Shuffle Puzzle</h1>
-            <div class="game-controls">
-                <select id="difficulty" class="control-select">
-                    <option value="3">Easy (3x3)</option>
-                    <option value="4" selected>Medium (4x4)</option>
-                    <option value="5">Hard (5x5)</option>
-                </select>
-                <select id="imageSelect" class="control-select">
-                    <option value="nature">Nature</option>
-                    <option value="city">City</option>
-                    <option value="abstract">Abstract</option>
-                    <option value="custom">Custom URL</option>
-                </select>
-                <button id="newGame" class="btn btn-primary">
-                    <i class="fas fa-play"></i> New Game
+        <!-- Introduction Step -->
+        <div id="introStep" class="game-step active">
+            <div class="intro-content">
+                <div class="developer-info">
+                    <div class="avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <h1>Shuffle Puzzle Game</h1>
+                    <p class="developer-name">Developed by <strong>Enhanced Game Studio</strong></p>
+                    <p class="game-description">
+                        Welcome to the ultimate sliding puzzle experience! Test your problem-solving skills 
+                        with beautiful images and smooth gameplay. Challenge yourself across different 
+                        difficulty levels and track your best scores.
+                    </p>
+                </div>
+                <div class="intro-features">
+                    <div class="feature">
+                        <i class="fas fa-brain"></i>
+                        <span>Mind Training</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Mobile Friendly</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-trophy"></i>
+                        <span>Score Tracking</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-keyboard"></i>
+                        <span>Keyboard Support</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-large" onclick="nextStep()">
+                    <i class="fas fa-play"></i> Let's Start
                 </button>
-                <button id="hintBtn" class="btn btn-secondary">
-                    <i class="fas fa-lightbulb"></i> Hint
-                </button>
-            </div>
-        </header>
-
-        <div class="game-stats">
-            <div class="stat-item">
-                <i class="fas fa-stopwatch"></i>
-                <span>Time: <span id="timer">00:00</span></span>
-            </div>
-            <div class="stat-item">
-                <i class="fas fa-mouse-pointer"></i>
-                <span>Moves: <span id="moveCounter">0</span></span>
-            </div>
-            <div class="stat-item">
-                <i class="fas fa-trophy"></i>
-                <span>Best: <span id="bestScore">--</span></span>
             </div>
         </div>
 
-        <div class="game-board-container">
-            <div id="gameBoard" class="game-board"></div>
-            <div id="previewImage" class="preview-image">
-                <img id="previewImg" src="" alt="Preview">
-                <div class="preview-label">Preview</div>
+        <!-- Grid Selection Step -->
+        <div id="gridStep" class="game-step">
+            <div class="step-content">
+                <h2><i class="fas fa-th"></i> Step 1: Choose Difficulty</h2>
+                <p>Select your preferred grid size. Larger grids are more challenging!</p>
+                
+                <div class="grid-options">
+                    <div class="grid-option" data-size="3">
+                        <div class="grid-preview grid-3x3">
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile empty"></div>
+                        </div>
+                        <h3>Easy</h3>
+                        <p>3×3 Grid</p>
+                        <span class="difficulty-badge easy">Beginner</span>
+                    </div>
+                    
+                    <div class="grid-option selected" data-size="4">
+                        <div class="grid-preview grid-4x4">
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile empty"></div>
+                        </div>
+                        <h3>Medium</h3>
+                        <p>4×4 Grid</p>
+                        <span class="difficulty-badge medium">Intermediate</span>
+                    </div>
+                    
+                    <div class="grid-option" data-size="5">
+                        <div class="grid-preview grid-5x5">
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile"></div>
+                            <div class="preview-tile empty"></div>
+                        </div>
+                        <h3>Hard</h3>
+                        <p>5×5 Grid</p>
+                        <span class="difficulty-badge hard">Expert</span>
+                    </div>
+                </div>
+                
+                <div class="step-actions">
+                    <button class="btn btn-secondary" onclick="previousStep()">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button class="btn btn-primary" onclick="nextStep()">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
+        <!-- Image Selection Step -->
+        <div id="imageStep" class="game-step">
+            <div class="step-content">
+                <h2><i class="fas fa-images"></i> Step 2: Choose Your Image</h2>
+                <p>Select a beautiful image from Unsplash or use your own custom URL</p>
+                
+                <div class="image-categories">
+                    <button class="category-btn active" data-category="nature">
+                        <i class="fas fa-leaf"></i> Nature
+                    </button>
+                    <button class="category-btn" data-category="city">
+                        <i class="fas fa-city"></i> City
+                    </button>
+                    <button class="category-btn" data-category="abstract">
+                        <i class="fas fa-palette"></i> Abstract
+                    </button>
+                    <button class="category-btn" data-category="animals">
+                        <i class="fas fa-paw"></i> Animals
+                    </button>
+                    <button class="category-btn" data-category="space">
+                        <i class="fas fa-rocket"></i> Space
+                    </button>
+                </div>
+                
+                <div class="image-grid" id="imageGrid">
+                    <!-- Images will be loaded here -->
+                </div>
+                
+                <div class="custom-image-section">
+                    <h3>Or use your own image:</h3>
+                    <input type="url" id="customImageInput" placeholder="Enter image URL..." class="custom-input">
+                    <button class="btn btn-secondary" onclick="useCustomImage()">
+                        <i class="fas fa-link"></i> Use Custom URL
+                    </button>
+                </div>
+                
+                <div class="step-actions">
+                    <button class="btn btn-secondary" onclick="previousStep()">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button class="btn btn-primary" onclick="nextStep()" disabled id="imageNextBtn">
+                        Start Game <i class="fas fa-play"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Step -->
+        <div id="gameStep" class="game-step">
+            <header class="game-header">
+                <h1><i class="fas fa-puzzle-piece"></i> Shuffle Puzzle</h1>
+                <div class="game-controls">
+                    <button id="hintBtn" class="btn btn-secondary">
+                        <i class="fas fa-lightbulb"></i> Hint
+                    </button>
+                    <button id="resetGame" class="btn btn-primary">
+                        <i class="fas fa-redo"></i> New Game
+                    </button>
+                </div>
+            </header>
+
+            <div class="game-stats">
+                <div class="stat-item">
+                    <i class="fas fa-stopwatch"></i>
+                    <span>Time: <span id="timer">00:00</span></span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-mouse-pointer"></i>
+                    <span>Moves: <span id="moveCounter">0</span></span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-trophy"></i>
+                    <span>Best: <span id="bestScore">--</span></span>
+                </div>
+            </div>
+
+            <div class="keyboard-instructions">
+                <p><i class="fas fa-keyboard"></i> Use arrow keys to move tiles</p>
+            </div>
+
+            <div class="game-board-container">
+                <div id="gameBoard" class="game-board" style="display: none;"></div>
+                <div id="previewImage" class="preview-image">
+                    <img id="previewImg" src="" alt="Preview">
+                    <div class="preview-label">Target Image</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
         <div id="successModal" class="modal">
             <div class="modal-content">
                 <div class="success-animation">
@@ -79,20 +255,9 @@
                     <button id="playAgain" class="btn btn-primary">
                         <i class="fas fa-redo"></i> Play Again
                     </button>
-                    <button id="nextLevel" class="btn btn-secondary">
-                        <i class="fas fa-arrow-right"></i> Next Level
+                    <button id="newSetup" class="btn btn-secondary">
+                        <i class="fas fa-cog"></i> New Setup
                     </button>
-                </div>
-            </div>
-        </div>
-
-        <div id="customImageModal" class="modal">
-            <div class="modal-content">
-                <h3>Enter Custom Image URL</h3>
-                <input type="url" id="customImageUrl" placeholder="https://example.com/image.jpg" class="custom-input">
-                <div class="modal-actions">
-                    <button id="confirmCustomImage" class="btn btn-primary">Confirm</button>
-                    <button id="cancelCustomImage" class="btn btn-secondary">Cancel</button>
                 </div>
             </div>
         </div>
