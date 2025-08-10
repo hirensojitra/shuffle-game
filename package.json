@@ -4,6 +4,7 @@
   "description": "A modern shuffle puzzle game with multiple difficulty levels and beautiful images",
   "main": "index.html",
   "scripts": {
+    "build": "echo 'This is a static site. Files are ready for deployment.' && exit 0",
     "start": "npx serve .",
     "dev": "npx serve . --listen 3000"
   },
