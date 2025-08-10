@@ -6,9 +6,26 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
     min-height: 100vh;
     color: #333;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
 }
 
 .game-container {
@@ -31,33 +48,62 @@ body {
 /* Introduction Step */
 .intro-content {
     text-align: center;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.98);
     padding: 60px 40px;
-    border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border-radius: 25px;
+    box-shadow: 
+        0 25px 80px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
     max-width: 800px;
     margin: 50px auto;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .developer-info .avatar {
-    font-size: 5rem;
-    color: #667eea;
+    font-size: 6rem;
+    background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 20px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
 }
 
 .intro-content h1 {
-    font-size: 3rem;
-    color: #4a5568;
+    font-size: 3.5rem;
+    background: linear-gradient(135deg, #2d3748, #4a5568);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    font-weight: 700;
+    letter-spacing: -1px;
 }
 
 .developer-name {
     font-size: 1.2rem;
-    color: #667eea;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 30px;
-    font-weight: 600;
+    font-weight: 700;
+}
+
+.developer-name a {
+    background: linear-gradient(135deg, #e53e3e, #dd6b20);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-decoration: none;
+    font-weight: 800;
+    transition: all 0.3s ease;
+}
+
+.developer-name a:hover {
+    filter: drop-shadow(0 2px 4px rgba(229, 62, 62, 0.3));
+    transform: translateY(-1px);
 }
 
 .game-description {
@@ -83,14 +129,25 @@ body {
     align-items: center;
     gap: 10px;
     padding: 20px;
-    background: rgba(102, 126, 234, 0.1);
-    border-radius: 15px;
-    border: 2px solid rgba(102, 126, 234, 0.2);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+    border-radius: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+    border-color: rgba(102, 126, 234, 0.4);
 }
 
 .feature i {
     font-size: 2rem;
-    color: #667eea;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .feature span {
@@ -100,20 +157,27 @@ body {
 
 /* Step Content */
 .step-content {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.98);
     padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border-radius: 25px;
+    box-shadow: 
+        0 25px 80px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
     max-width: 1000px;
     margin: 20px auto;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .step-content h2 {
     font-size: 2.5rem;
-    color: #4a5568;
+    background: linear-gradient(135deg, #2d3748, #4a5568);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 15px;
     text-align: center;
+    font-weight: 700;
 }
 
 .step-content > p {
@@ -144,13 +208,14 @@ body {
 .grid-option:hover {
     border-color: #667eea;
     transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.25);
 }
 
 .grid-option.selected {
     border-color: #667eea;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(240, 147, 251, 0.1));
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+    transform: translateY(-3px);
 }
 
 .grid-preview {
@@ -262,23 +327,26 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     border: 3px solid transparent;
-    aspect-ratio: 1;
+    aspect-ratio: 1 / 1;
+    background: #f7fafc;
 }
 
 .image-option:hover {
     transform: scale(1.05);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
 }
 
 .image-option.selected {
     border-color: #667eea;
-    box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+    box-shadow: 0 0 40px rgba(102, 126, 234, 0.6);
+    transform: scale(1.02);
 }
 
 .image-option img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
 }
 
 .image-option .image-overlay {
@@ -310,16 +378,51 @@ body {
 }
 
 .custom-image-section {
-    background: rgba(102, 126, 234, 0.1);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
     padding: 30px;
-    border-radius: 15px;
+    border-radius: 20px;
     text-align: center;
     margin-bottom: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
 }
 
 .custom-image-section h3 {
     color: #4a5568;
     margin-bottom: 20px;
+}
+
+.file-upload-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.upload-preview {
+    display: none;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.upload-preview.show {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.upload-preview img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 15px;
+    border: 3px solid #667eea;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.upload-preview p {
+    margin-top: 10px;
+    color: #4a5568;
+    font-weight: 600;
 }
 
 .custom-input {
@@ -369,13 +472,30 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
     color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
 }
 
 .btn-primary:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
 }
 
 .btn-primary:disabled {
@@ -398,18 +518,24 @@ body {
 .game-header {
     text-align: center;
     margin-bottom: 30px;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.98);
     padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    box-shadow: 
+        0 15px 40px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .game-header h1 {
     font-size: 2.5rem;
-    color: #4a5568;
+    background: linear-gradient(135deg, #2d3748, #4a5568);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 20px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    font-weight: 700;
 }
 
 .game-controls {
@@ -430,20 +556,34 @@ body {
 }
 
 .stat-item {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.98);
     padding: 15px 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
     font-weight: 600;
     color: #4a5568;
     display: flex;
     align-items: center;
     gap: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 30px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.3);
 }
 
 .stat-item i {
-    color: #667eea;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     font-size: 1.2rem;
 }
 
@@ -451,12 +591,14 @@ body {
 .keyboard-instructions {
     text-align: center;
     margin-bottom: 20px;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     padding: 10px 20px;
-    border-radius: 25px;
+    border-radius: 30px;
     display: inline-block;
     margin-left: 50%;
     transform: translateX(-50%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .keyboard-instructions p {
@@ -466,7 +608,10 @@ body {
 }
 
 .keyboard-instructions i {
-    color: #667eea;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-right: 8px;
 }
 
@@ -542,18 +687,24 @@ body {
 }
 
 .preview-image {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 20px;
     padding: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 
+        0 15px 40px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
     text-align: center;
     max-width: 300px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .preview-image img {
     width: 100%;
     height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
@@ -584,27 +735,39 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: white;
+    background: rgba(255, 255, 255, 0.98);
     padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border-radius: 25px;
+    box-shadow: 
+        0 30px 80px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
     text-align: center;
     max-width: 500px;
     width: 90%;
     animation: slideIn 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(15px);
 }
 
 .success-animation {
     font-size: 4rem;
-    color: #ffd700;
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 20px;
     animation: bounce 1s infinite;
+    filter: drop-shadow(0 4px 8px rgba(255, 215, 0, 0.3));
 }
 
 .modal-content h2 {
-    color: #4a5568;
+    background: linear-gradient(135deg, #2d3748, #4a5568);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 30px;
     font-size: 2rem;
+    font-weight: 700;
 }
 
 .success-stats {
@@ -615,10 +778,17 @@ body {
 }
 
 .success-stat {
-    background: #f7fafc;
+    background: linear-gradient(135deg, #f7fafc, #edf2f7);
     padding: 15px;
-    border-radius: 10px;
-    border: 2px solid #e2e8f0;
+    border-radius: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.success-stat:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 .stat-label {

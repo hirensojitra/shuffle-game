@@ -126,14 +126,32 @@ class EnhancedPuzzleGame {
                 this.selectedImage = e.target.result;
                 document.getElementById('imageNextBtn').disabled = false;
 
-                // Visual feedback
-                fileInput.style.borderColor = '#667eea';
-                setTimeout(() => {
-                    fileInput.style.borderColor = '';
-                }, 1000);
+                // Show preview
+                this.showUploadPreview(e.target.result);
             };
             reader.readAsDataURL(file);
         }
+    }
+    
+    showUploadPreview(imageSrc) {
+        const previewContainer = document.querySelector('.upload-preview');
+        const previewImg = previewContainer.querySelector('img');
+        
+        if (!previewContainer) {
+            // Create preview container if it doesn't exist
+            const container = document.createElement('div');
+            container.className = 'upload-preview';
+            container.innerHTML = `
+                <img src="" alt="Upload Preview">
+                <p>✓ Image uploaded successfully</p>
+            `;
+            document.querySelector('.custom-image-section').appendChild(container);
+        }
+        
+        const preview = document.querySelector('.upload-preview');
+        const img = preview.querySelector('img');
+        img.src = imageSrc;
+        preview.classList.add('show');
     }
     
     handleKeyPress(e) {

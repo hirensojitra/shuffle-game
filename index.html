@@ -181,9 +181,15 @@
                     <h3>Or upload your own image:</h3>
                     <input type="file" id="imageUploadInput" accept="image/*" class="custom-input"
                         style="display: none;">
-                    <button class="btn btn-secondary" onclick="document.getElementById('imageUploadInput').click();">
-                        <i class="fas fa-upload"></i> Upload Photo
-                    </button>
+                    <div class="file-upload-container">
+                        <button class="btn btn-secondary" onclick="document.getElementById('imageUploadInput').click();">
+                            <i class="fas fa-upload"></i> Upload Photo
+                        </button>
+                    </div>
+                    <div class="upload-preview">
+                        <img src="" alt="Upload Preview">
+                        <p>✓ Image uploaded successfully</p>
+                    </div>
                 </div>
 
                 <div class="step-actions">
