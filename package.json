@@ -1,0 +1,22 @@
+{
+  "name": "shuffle-puzzle-game",
+  "version": "1.0.0",
+  "description": "A modern shuffle puzzle game with multiple difficulty levels and beautiful images",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve . --listen 3000"
+  },
+  "keywords": [
+    "puzzle",
+    "game",
+    "shuffle",
+    "sliding-puzzle",
+    "javascript"
+  ],
+  "author": "Hiren Sojitra",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}
