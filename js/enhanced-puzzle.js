@@ -294,7 +294,7 @@ class EnhancedPuzzleGame {
         this.selectedImage = null;
         document.getElementById('imageNextBtn').disabled = true;
         document.querySelectorAll('.image-option').forEach(opt => opt.classList.remove('selected'));
-        document.getElementById('customImageInput').value = '';
+        document.getElementById('imageUploadInput').value = '';
     }
     
     updatePreviewImage() {
